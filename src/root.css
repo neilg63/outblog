@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 16px;
+}
+
+@media screen and (min-width: 1024px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  html {
+    font-size: 19px;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  html {
+    font-size: 20px;
+  }
+}
+
+main {
+  max-width: 80rem;
+}
+
+main article {
+  text-align: left;
+  max-width: 60rem;
+}
+
+main article h1,
+main article h2,
+main article h3,
+main article h4,
+main article h5 {
+  color: rgb(3, 105, 161);
+  margin: 1.5em 0 0.5em 0;
+}
+
+main article h1 {
+  font-size: 2rem;
+}
+
+main article h2 {
+  font-size: 1.66667rem;
+}
+main article h3 {
+  font-size: 1.333rem;
+}
+
+main article h4 {
+  font-size: 1.25rem;
+}
+
+main article h5 {
+  font-size: 1.125rem;
+}
