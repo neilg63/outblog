@@ -19,7 +19,6 @@ export default function YearList() {
   const { posts } = useRouteData<typeof routeData>();
   const [items, setItems] = createSignal(posts());
   const [yearLabel, setYearLabel] = createSignal("");
-  console.log(params.year)
   createEffect(() => {
     const year = isNumeric(params.year) ? parseInt(params.year) : 0;
     setYearLabel(year > 1970 ? `${year} Blogroll` : 'Not Found');

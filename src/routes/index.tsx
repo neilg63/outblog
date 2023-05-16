@@ -13,6 +13,8 @@ export function routeData() {
 
 export default function Home() {
   const { posts } = useRouteData<typeof routeData>();
+  const nextPage = 2;
+  const nextLink = `/list/${nextPage}`
   return (
     <main class="text-center mx-auto text-gray-700 p-4">
       <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
@@ -28,7 +30,8 @@ export default function Home() {
             <p>{post.tagList}</p>
           </li>}
       </For>
-    </ul>
+      </ul>
+      <p><A href={nextLink}>{ nextPage }</A></p>
     </main>
   );
 }
