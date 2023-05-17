@@ -15,13 +15,14 @@ import {
   useRouteData,
 } from "solid-start";
 import "./root.css";
-import { siteTitle } from "./api/settings";
+import { siteTitle, startYear } from "./api/settings";
 import { generateYearLinks } from "./api/utils";
 
 
 export default function Root() {
   const location = useLocation();
   const yearLinks = createMemo(() => generateYearLinks());
+  const footerYeakLinks = createMemo(() => generateYearLinks(50, startYear));
   const active = (path: string) =>
     path == location.pathname
       ? "border-sky-600"
@@ -54,6 +55,17 @@ export default function Root() {
             <Routes>
               <FileRoutes />
             </Routes>
+            <footer>
+              <nav>
+                <ul class="inline-flex flex-wrap justify-items-center items-center">
+                  <For each={footerYeakLinks()}>
+                  {(item) => <li class={`border-b-2 ${active(item?.link)} mx-1.5 sm:mx-6`}>
+                      <A href={item?.link} class="p-2 flex bg-indigo-500 rounded-lg shadow-lg">{item.title}</A>
+                  </li>}
+                  </For>
+                </ul>
+              </nav>
+            </footer>
           </ErrorBoundary>
         </Suspense>
         <Scripts />

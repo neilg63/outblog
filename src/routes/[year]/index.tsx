@@ -3,6 +3,7 @@ import { A, Head, Meta, Title, useParams, useRouteData } from "solid-start";
 import { fetchTopPosts } from "~/api/fetch";
 import { perPage } from "~/api/settings";
 import { isNumeric } from "~/api/utils";
+import PostList from "~/components/PostList";
 
 export function routeData() {
   const params = useParams();
@@ -35,17 +36,7 @@ export default function YearList() {
       <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
         {yearLabel()}
       </h1>
-      <ul class="text-center">
-        <For each={items()}>
-            {(post) => <li>
-              <p><time>{ post.mediumDate }</time></p>
-              <h4><A href={post.uri}>{post.title}</A></h4>
-              <img src={post.previewImg} />
-              <article innerHTML={post.excerpt} />
-              <p>{post.tagList}</p>
-            </li>}
-        </For>
-      </ul>
+        <PostList items={items} />
       </main>
       </>
   )

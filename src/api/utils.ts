@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { YearLink } from "./models";
+import { skipYears } from "./settings";
 
 export const isNumeric = (num: any): boolean => {
   const dt = typeof num;
@@ -102,7 +103,7 @@ export const renderDateRange = (year = 0, month = 0): DateParamFiler => {
     if (month > 0) {
       const m = zeroPad2(month);
       const nM = month < 12 ? month + 1 : 1;
-      const nextM = zeroPad2(month + 1);
+      const nextM = zeroPad2(nM);
       const nYear = month < 12 ? year : year + 1;
       before = `${nYear}-${nextM}-01T00:00:00`;
       after = `${year}-${m}-01T00:00:00`;
@@ -130,13 +131,21 @@ export const renderYearMonth = (year = 0, month = 0): string => {
   }
 };
 
-export const generateYearLinks = (max = 6): YearLink[] => {
+export const generateYearLinks = (max = 6, startYear = 2000): YearLink[] => {
   const yls: YearLink[] = [];
   const currentYear = new Date().getFullYear();
   for (let i = 0; i < max; i++) {
     let yl = new YearLink(currentYear - i);
-    if (yl instanceof YearLink && yl.year >= 1900) {
-      yls.push(yl);
+    if (yl.year >= startYear) {
+      if (
+        yl instanceof YearLink &&
+        yl.year >= 1900 &&
+        skipYears.includes(yl.year) === false
+      ) {
+        yls.push(yl);
+      }
+    } else {
+      break;
     }
   }
   return yls;

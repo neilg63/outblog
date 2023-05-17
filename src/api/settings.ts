@@ -5,6 +5,10 @@ export const siteTitle = `Outsider Insight`;
 
 export const perPage = 32; // default for blog post listings
 
+export const startYear = 2001; // earliest available year
+
+export const skipYears = [2004]; // earliest available year
+
 // process.env.API_BASE_UR
 export const get_pai_uri = (): string => API_URI;
 

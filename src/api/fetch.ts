@@ -54,7 +54,7 @@ export const fetchTopPosts = async (
   const params: ParamSet = {
     page,
     per_page: perPage,
-    _fields: "id,date,slug,title,link,excerpt,tags,featured_media,featured_img",
+    _fields: "id,date,slug,title,link,excerpt,tags,featured_media,preview_img",
   };
   if (monthFilter.apply) {
     params.per_page = 100;

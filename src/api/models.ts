@@ -1,11 +1,21 @@
 import { urlSplit } from "./settings";
-import { extractRendered, formatDate, notEmptyString } from "./utils";
+import {
+  extractRendered,
+  formatDate,
+  isObjectWithString,
+  notEmptyString,
+} from "./utils";
 
 export interface ParamSet {
   [key: string]: any;
 }
 
 type BasePost = { title: string; content: string; slug: string };
+
+export interface ImgSize {
+  width: number;
+  height: number;
+}
 
 export class Post implements BasePost {
   title = "";
@@ -14,6 +24,7 @@ export class Post implements BasePost {
   slug = "";
   excerpt = "";
   previewImg = "";
+  previewSize: ImgSize = { width: 0, height: 0 };
   date: Date = new Date(0);
   modified: Date = new Date(0);
   tags: Tag[] = [];
@@ -39,7 +50,13 @@ export class Post implements BasePost {
       if (resource.modified) {
         this.modified = new Date(resource.modified);
       }
-      if (notEmptyString(resource.featured_img, 7)) {
+      if (isObjectWithString(resource.preview_img, "src")) {
+        const { width, height, src } = resource.preview_img;
+        this.previewImg = src;
+        if (width > 0 && height > 0) {
+          this.previewSize = { width, height };
+        }
+      } else if (notEmptyString(resource.featured_img, 7)) {
         this.previewImg = resource.featured_img;
       }
       if (resource.tags instanceof Array && tags instanceof Array) {
