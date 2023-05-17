@@ -16,7 +16,6 @@
     "vite": "^4.1.4"
   },
   "dependencies": {
-    "@solid-primitives/local-store": "^1.1.4",
     "@solidjs/meta": "^0.28.2",
     "@solidjs/router": "^0.8.2",
     "date-fns": "^2.30.0",
