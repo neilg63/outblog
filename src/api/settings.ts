@@ -10,14 +10,14 @@ export const startYear = 2001; // earliest available year
 export const skipYears = [2004]; // earliest available year
 
 // process.env.API_BASE_UR
-export const get_pai_uri = (): string => API_URI;
+export const get_api_uri = (): string => API_URI;
 
 export const wpApiUri = (method: string): string => {
-  return [get_pai_uri(), WP_API_BASE, method].join("/");
+  return [get_api_uri(), WP_API_BASE, method].join("/");
 };
 
 export const urlSplit = (): string => {
-  const result = get_pai_uri()
+  const result = get_api_uri()
     ?.split(/:\/\/(www|cms\.)?/)
     ?.pop();
   return typeof result === "string" ? result : "/";

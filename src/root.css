@@ -36,10 +36,28 @@ main {
   margin: 0 auto;
 }
 
-main article {
+p.date > time {
+  font-style: italic;
   text-align: left;
+}
+
+main p.date {
+  text-align: left;
+  margin: 0.75em auto 1.5em;
+}
+
+.inner-content > .date {
+  max-width: 60rem;
+}
+
+main .adjacent,
+main article {
   max-width: 60rem;
   margin: 0 auto;
+}
+
+main article {
+  text-align: left;
   padding: 0 3.75%;
 }
 
@@ -71,10 +89,89 @@ main article h5 {
   font-size: 1.125rem;
 }
 
+main .adjacent {
+  margin: 1rem auto;
+  padding: 1rem 0;
+  border-top: dashed 1px #cccccc;
+}
+
+main .adjacent .direction {
+  width: 40%;
+  position: relative;
+}
+main .adjacent .next {
+  margin-right: 10%;
+  text-align: left;
+}
+
+main .adjacent .prev {
+  margin-left: 10%;
+  text-align: right;
+}
+
+main .adjacent .direction a {
+  display: block;
+  width: 100%;
+}
+
+main .adjacent .next a {
+  padding-left: 2rem;
+}
+
+main .adjacent .prev a {
+  padding-right: 2rem;
+ 
+}
+
+main .adjacent .next a::before,
+main .adjacent .prev a::after {
+  position: absolute;
+  top: -0.25rem;
+}
+
+main .adjacent .next a::before,
+main .adjacent .prev a::after {
+  content: "➤";
+  font-size: 1.25em;
+}
+
+main .adjacent .next a::before {
+  transform: rotate(180deg);
+  left: 0.5rem;
+}
+
+main .adjacent .prev a::after {
+  right: 0.5rem;
+}
+
+main article blockquote.wp-block-quote {
+  border-left: solid 0.5em #cccccc;
+  padding-left: 2em;
+  margin: 0.75em 0 1.25em 0;
+}
+
 body>footer nav ul li {
   margin-bottom: 1.5em;
 }
 
 body>footer nav ul li a {
   color: white;
+}
+
+@media screen and (min-width: 800px) {
+  main article {
+    padding: 0 5%;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  main article {
+    padding: 0 6.25%;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  main article {
+    padding: 0 7.5%;
+  }
 }

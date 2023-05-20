@@ -42,6 +42,14 @@ export const isObjectWithString = (obj: any = null, field = ""): boolean => {
   return isObjectWith(obj, field) && typeof obj[field] === "string";
 };
 
+export const validISODateString = (str: string): boolean => {
+  if (notEmptyString(str, 4)) {
+    return /^-?\d{1,4}-\d\d-\d\d((T|\s)\d\d:\d\d(:\d\d)?)?/.test(str);
+  } else {
+    return false;
+  }
+};
+
 export const extractRendered = (obj: any, field = "") => {
   if (
     isObjectWithObject(obj, field) &&
@@ -150,3 +158,15 @@ export const generateYearLinks = (max = 6, startYear = 2000): YearLink[] => {
   }
   return yls;
 };
+
+export const cleanText = (text: string): string => {
+  if (typeof text === "string") {
+    return text.replace(/(&#8217;)/, "'").replace(/(&#8211;)/, "⸺");
+  } else {
+    return "";
+  }
+};
+
+export const renderNextLabel = (page = 2) => `Next (page ${page})`;
+
+export const renderPageLink = (page = 2) => `/list/${page}`;

@@ -2,7 +2,8 @@ import { A, useParams, useRouteData } from "solid-start";
 import { fetchTopPosts } from "~/api/fetch";
 import { For, createEffect, createResource, createSignal } from "solid-js";
 import { perPage } from "~/api/settings";
-import { isNumeric } from "~/api/utils";
+import { isNumeric, renderNextLabel, renderPageLink } from "~/api/utils";
+import PostList from "~/components/PostList";
 
 export function routeData() {
   const params = useParams();
@@ -15,15 +16,11 @@ export function routeData() {
   return { posts };
 }
 
-const renderNextLabel = (page = 2) => `Next (page ${page})`;
-
-const renderPageLink = (page = 2) => `/list/${page}`;
 
 export default function List() {
   const { posts } = useRouteData<typeof routeData>();
   const params = useParams();
   const page = params?.page && isNumeric(params?.page) ? parseInt(params.page) : 1;
-  const nextPage = page + 1;
   const [pageTitle, setPageTitle] = createSignal(`Page ${page}`);
   const [items, setItems] = createSignal(posts());
   const [nextLink, setNextLink] = createSignal(renderPageLink(page + 1));
@@ -45,17 +42,7 @@ export default function List() {
       <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
         {pageTitle()}
       </h1>
-      <ul class="text-center">
-      <For each={items()}>
-          {(post) => <li>
-            <p><time>{ post.mediumDate }</time></p>
-            <h4><A href={post.uri}>{post.title}</A></h4>
-            <img src={post.previewImg} />
-            <article innerHTML={post.excerpt} />
-            <p>{post.tagList}</p>
-          </li>}
-      </For>
-      </ul>
+      <PostList items={items} />
       <p><A href={nextLink()}>{ nextLabel() }</A></p>
     </main>
   );

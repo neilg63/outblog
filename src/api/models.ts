@@ -1,16 +1,63 @@
 import { urlSplit } from "./settings";
 import {
+  cleanText,
   extractRendered,
   formatDate,
+  isObjectWithObject,
   isObjectWithString,
   notEmptyString,
+  validISODateString,
 } from "./utils";
 
 export interface ParamSet {
   [key: string]: any;
 }
 
-type BasePost = { title: string; content: string; slug: string };
+type BasePost = { title: string; excerpt: string; slug: string; uri: string };
+
+export class PostPreview implements BasePost {
+  title = "";
+  slug = "";
+  uri = "";
+  excerpt = "";
+  date = new Date(0);
+  mode = 1;
+
+  constructor(mode = 1, resource: any = null) {
+    if (resource instanceof Object) {
+      this.title = cleanText(resource.title);
+      if (typeof resource.uri === "string") {
+        const full_slug = resource.uri.split(urlSplit()).pop();
+        if (typeof full_slug === "string") {
+          this.uri = full_slug;
+        }
+      }
+      if (typeof resource.slug === "string") {
+        this.slug = resource.slug;
+      }
+      this.excerpt = notEmptyString(resource.excerpt) ? resource.excerpt : "";
+      if (validISODateString(resource.date)) {
+        this.date = new Date(resource.date);
+      }
+    }
+  }
+
+  get isNext() {
+    return this.mode === 1;
+  }
+
+  get isPrev() {
+    return this.mode === -1;
+  }
+
+  isValid() {
+    return (
+      this.date.getTime() > 1000 &&
+      notEmptyString(this.slug) &&
+      notEmptyString(this.title)
+    );
+  }
+}
 
 export interface ImgSize {
   width: number;
@@ -29,10 +76,12 @@ export class Post implements BasePost {
   modified: Date = new Date(0);
   tags: Tag[] = [];
   mainTag: Tag = new Tag();
+  next = new PostPreview();
+  prev = new PostPreview();
 
   constructor(resource: any = null, tags: Tag[] = []) {
     if (resource instanceof Object) {
-      this.title = extractRendered(resource, "title");
+      this.title = cleanText(extractRendered(resource, "title"));
       if (typeof resource.link === "string") {
         const full_slug = resource.link.split(urlSplit()).pop();
         if (typeof full_slug === "string") {
@@ -66,6 +115,16 @@ export class Post implements BasePost {
             return tg instanceof Tag ? tg : new Tag(null);
           })
           .filter((t: Tag) => t.isValid());
+      }
+      if (isObjectWithObject(resource.adjacent, "next")) {
+        if (resource.adjacent.next.id > 0) {
+          this.next = new PostPreview(1, resource.adjacent.next);
+        }
+      }
+      if (isObjectWithObject(resource.adjacent, "prev")) {
+        if (resource.adjacent.prev.id > 0) {
+          this.prev = new PostPreview(-1, resource.adjacent.prev);
+        }
       }
     }
   }
@@ -104,6 +163,14 @@ export class Post implements BasePost {
       .filter((tg: Tag) => notEmptyString(tg.name))
       .map((tg) => tg.name)
       .join(", ");
+  }
+
+  get hasNext(): boolean {
+    return this.next.isValid();
+  }
+
+  get hasPrev(): boolean {
+    return this.prev.isValid();
   }
 }
 
