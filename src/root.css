@@ -6,9 +6,24 @@ html {
   font-size: 16px;
 }
 
+html.size-s {
+  font-size: 14px;
+}
+
+html.size-l {
+  font-size: 18px;
+}
+
 @media screen and (min-width: 1024px) {
   html {
     font-size: 17px;
+  }
+  html.size-s {
+    font-size: 15px;
+  }
+
+  html.size-l {
+    font-size: 19px;
   }
 }
 
@@ -16,11 +31,25 @@ html {
   html {
     font-size: 18px;
   }
+  html.size-s {
+    font-size: 16px;
+  }
+
+  html.size-l {
+    font-size: 20px;
+  }
 }
 
 @media screen and (min-width: 1500px) {
   html {
     font-size: 19px;
+  }
+  html.size-s {
+    font-size: 16px;
+  }
+  
+  html.size-l {
+    font-size: 21px;
   }
 }
 
@@ -28,12 +57,101 @@ html {
   html {
     font-size: 20px;
   }
+
+  html.size-s {
+    font-size: 16px;
+  }
+
+  html.size-l {
+    font-size: 24px;
+  }
+}
+
+.dark-mode body {
+  background-color: black;
+}
+
+.dark-mode .text-gray-700 {
+  color: #cccccc;
+}
+
+.dark-mode .text-sky-700 {
+  color: #ffff99;
 }
 
 body > footer,
 main {
   max-width: 80rem;
   margin: 0 auto;
+}
+
+header .display-options {
+  position: absolute;
+  top: 1em;
+  right: 2.5%;
+  transition: top 0.3333s ease-in-out;
+}
+
+.scrolled-down header .display-options {
+  top: 0.25em;
+}
+
+header .display-options .display-mode-toggle span {
+  display: block;
+  padding: 0 0.25em;
+  max-width: 1.5em;
+  max-height: 1.5em;
+}
+
+header .display-options .display-mode-toggle span.light {
+  background-color: #ccffff;
+  color: yellow;
+}
+
+.size-l header .display-options .large,
+.size-s header .display-options .small,
+.size-m header .display-options .medium {
+  color: yellow;
+}
+
+header .display-options .display-mode-toggle span:hover,
+header .display-options .text-size:hover {
+  font-style: italic;
+}
+
+.dark-mode header .display-options .display-mode-toggle span.light,
+.light-mode header .display-options .display-mode-toggle span.dark {
+  filter: grayscale(1);
+  transition: filter 0.333s ease-in-out, transform 0.333s ease-in-out;
+}
+
+html.dark-mode header .display-options .display-mode-toggle span.light:hover,
+html.light-mode header .display-options .display-mode-toggle span.dark:hover {
+  filter: grayscale(0);
+}
+
+
+header .display-options .display-mode-toggle span.dark {
+  background-color: black;
+  color: white;
+}
+
+header .display-options > div {
+  user-select: none;
+  cursor: pointer;
+}
+
+header .display-options .text-size {
+  margin: 0 .5em;
+}
+
+header .display-options> .small {
+  transform: scale(0.8);
+  margin-left: 2em;
+}
+
+header .display-options>.large {
+  transform: scale(1.2);
 }
 
 p.date > time {
@@ -43,20 +161,55 @@ p.date > time {
 
 main p.date {
   text-align: left;
+}
+
+header.top-header {
+  width: 100%;
+  box-shadow: rgba(0, 0, 0, 0.15) 3px 3px 4px;
+}
+
+header.top-header li,
+header.top-header .text-size {
+  font-weight: bold;
+}
+
+header.top-header {
+  position: fixed;
+  top: 0;
+  z-index: 50;
+}
+
+body > main {
+  margin-top: 4rem;
+}
+
+header.top-header.p-2,
+header.top-header nav ul.p-2 {
+  transition: padding 0.333s ease-in-out;
+}
+
+.scrolled-down header.top-header.p-2,
+.scrolled-down header.top-header nav ul.p-2 {
+  padding: 0.125rem 0.75rem;
+}
+
+.inner-content.date {
   margin: 0.75em auto 1.5em;
 }
 
-.inner-content > .date {
-  max-width: 60rem;
+main .content-list li {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
 }
 
 main .adjacent,
-main article {
+main .inner-content {
+  position: relative;
   max-width: 60rem;
   margin: 0 auto;
 }
 
-main article {
+main .inner-content {
   text-align: left;
   padding: 0 3.75%;
 }
@@ -68,6 +221,26 @@ main article h4,
 main article h5 {
   color: rgb(3, 105, 161);
   margin: 1.5em 0 0.5em 0;
+}
+
+.dark-mode main article h1,
+.dark-mode main article h2,
+.dark-mode main article h3,
+.dark-mode main article h4,
+.dark-mode main article h5 {
+  color: #ffff99;
+}
+
+main a {
+  color: rgb(3, 105, 161);
+}
+
+main a:hover {
+  text-decoration: underline;
+}
+
+.dark-mode main a {
+  color: #ffcc66;
 }
 
 main article h1 {
@@ -158,20 +331,55 @@ body>footer nav ul li a {
   color: white;
 }
 
+.content-list li {
+  flex-flow: column nowrap;
+}
+
+.content-list li figure,
+.content-list li figure img {
+  width: 100%;
+}
+
 @media screen and (min-width: 800px) {
-  main article {
+  main .inner-content {
     padding: 0 5%;
   }
+
+  .content-list li {
+    flex-flow: row nowrap;
+  }
+  .content-list li figure {
+    width: 45%;
+    padding-right: 5%;
+  }
+
+  .content-list li .info {
+    width: 50%;
+  }
+
+}
+
+@media screen and (min-width: 1024px) {
+  
+  .content-list li figure {
+    width: 35%;
+    padding-right: 5%;
+  }
+
+  .content-list li .info {
+    width: 60%;
+  }
+
 }
 
 @media screen and (min-width: 1280px) {
-  main article {
+  main .inner-content {
     padding: 0 6.25%;
   }
 }
 
 @media screen and (min-width: 1440px) {
-  main article {
+  main .inner-content {
     padding: 0 7.5%;
   }
 }

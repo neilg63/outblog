@@ -50,13 +50,22 @@ export const validISODateString = (str: string): boolean => {
   }
 };
 
-export const extractRendered = (obj: any, field = "") => {
+export const extractRendered = (obj: any, field = ""): string => {
   if (
     isObjectWithObject(obj, field) &&
     isObjectWithString(obj[field], "rendered")
   ) {
     return obj[field]["rendered"];
+  } else {
+    return "";
   }
+};
+
+export const extractExcerpt = (obj: any) => {
+  return extractRendered(obj, "excerpt").replace(
+    /\[.*?\]\s*(<\/\w+>\s*)*$/gi,
+    "$1"
+  );
 };
 
 const translateDateFormatCode = (mode = "short"): string => {
@@ -161,7 +170,10 @@ export const generateYearLinks = (max = 6, startYear = 2000): YearLink[] => {
 
 export const cleanText = (text: string): string => {
   if (typeof text === "string") {
-    return text.replace(/(&#8217;)/, "'").replace(/(&#8211;)/, "⸺");
+    return text
+      .replace(/(&#8217;)/, "'")
+      .replace(/(&#8211;)/, "⸺")
+      .replace(/&#8230;/, "...");
   } else {
     return "";
   }

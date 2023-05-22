@@ -1,6 +1,7 @@
 import { urlSplit } from "./settings";
 import {
   cleanText,
+  extractExcerpt,
   extractRendered,
   formatDate,
   isObjectWithObject,
@@ -92,7 +93,7 @@ export class Post implements BasePost {
         this.slug = resource.slug;
       }
       this.content = extractRendered(resource, "content");
-      this.excerpt = extractRendered(resource, "excerpt");
+      this.excerpt = extractExcerpt(resource);
       if (resource.date) {
         this.date = new Date(resource.date);
       }
