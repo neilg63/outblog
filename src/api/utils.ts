@@ -182,3 +182,13 @@ export const cleanText = (text: string): string => {
 export const renderNextLabel = (page = 2) => `Next (page ${page})`;
 
 export const renderPageLink = (page = 2) => `/list/${page}`;
+
+export const cleanSearchString = (text: string): string => {
+  if (typeof text === "string" && encodeURIComponent instanceof Function) {
+    return encodeURIComponent(
+      text.replace(/[^a-z0-9àáéèêîïìùüûìëøöóòñõãß"-]+/gi, " ")
+    );
+  } else {
+    return "";
+  }
+};

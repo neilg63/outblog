@@ -69,6 +69,23 @@ export const fetchTopPosts = async (
   return data instanceof Array ? data.map((row) => mapToPost(row, tags)) : [];
 };
 
+export const searchPosts = async (
+  search = "",
+  start = 0,
+  perPage = 32
+): Promise<Post[]> => {
+  const page = start / perPage + 1;
+  const params: ParamSet = {
+    search,
+    page,
+    per_page: perPage,
+    _fields: "id,date,slug,title,link,excerpt,tags,featured_media,preview_img",
+  };
+  const data = await fetchContent("posts", params);
+  const tags = await fetchTags();
+  return data instanceof Array ? data.map((row) => mapToPost(row, tags)) : [];
+};
+
 export const fetchPost = async (slug = ""): Promise<Post> => {
   const page = 1;
   const params: ParamSet = {

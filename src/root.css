@@ -4,6 +4,7 @@
 
 html {
   font-size: 16px;
+  transition: font-size 0.333s ease-in-out;
 }
 
 html.size-s {
@@ -12,6 +13,14 @@ html.size-s {
 
 html.size-l {
   font-size: 18px;
+}
+
+body {
+  transition: background-color 0.5s ease-in-out;
+}
+
+.text-sky-700 {
+  transition: color 0.5s ease-in-out;
 }
 
 @media screen and (min-width: 1024px) {
@@ -179,6 +188,129 @@ header.top-header {
   z-index: 50;
 }
 
+header.top-header nav .search-toggle {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  transform: scale(1.25) translateY(-20%);
+  transition: transform 0.333s ease-in-out;
+}
+
+header.top-header nav .search-toggle:hover {
+  transform: scale(1.375) translateY(-22.5%) rotate(5deg);
+}
+
+header.top-header nav .search-toggle::before {
+  position: relative;
+  content: "🔎";
+}
+
+header.top-header input.search-input {
+  max-width: 0;
+  overflow: none;
+  transition: max-width 0.5s ease-in-out;
+}
+
+header.top-header.show-search input.search-input {
+  max-width: 100%;
+  opacity: 1;
+  border-radius: 0.25em;
+  padding: 0.25em 0.375em;
+}
+
+.top-header a,
+.menu-toggle {
+  user-select: none;
+}
+
+.top-header a:hover {
+  color: yellow;
+}
+
+.menu-toggle {
+  font-size: 1.25rem;
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+  width: 1em;
+  height: 1em;
+  border-top: solid 2px white;
+  border-bottom: solid 2px white;
+  transition: transform 0.333s ease-in-out, border-color 0.333s ease-in-out;
+}
+
+.menu-toggle:hover {
+  transform: rotate(45deg);
+  border-color: yellow;
+}
+
+.menu-expanded .menu-toggle {
+  transform: rotate(90deg);
+}
+
+@media screen and (max-width: 900px) {
+  header.top-header .link-item {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+  header.top-header.menu-expanded .link-item {
+    max-height: 3em;
+    opacity: 1;
+  }
+
+  header.top-header {
+    transition: max-height 0.5s ease-in-out;
+  }
+  
+  header.top-header ul {
+    flex-flow: column nowrap;
+    max-height: 1.5em;
+  }
+
+  header.top-header.menu-expanded ul {
+    max-height: 20em;
+  }
+
+  header.top-header ul>li:first-child {
+    margin-top: 2em;
+  }
+
+  header.top-header ul > li.search-toggle {
+    position: absolute;
+    top: 3em;
+    top: 0.5em;
+  }
+  header.top-header ul>li.link-item a {
+    display: block;
+    height: 2em;
+  }
+  header.top-header.menu-expanded ul>li.link-item {
+    height: 3em;
+  }
+  header.top-header.menu-expanded ul > li.link-item a {  
+    margin-bottom: 2em;
+  }
+  header.top-header ul > li a {
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .menu-toggle {
+    display: none;
+  }
+}
+
+.menu-toggle::before {
+  content: " ";
+  position: absolute;
+  top: calc(50% - 1px);
+  left: 0;
+  right: 0;
+  border-bottom: solid 2px white;
+}
+
 body > main {
   margin-top: 4rem;
 }
@@ -280,6 +412,8 @@ main .adjacent .next {
 main .adjacent .prev {
   margin-left: 10%;
   text-align: right;
+  align-self: flex-end;
+  justify-self: flex-end;
 }
 
 main .adjacent .direction a {

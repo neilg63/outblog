@@ -53,8 +53,8 @@ export class PostPreview implements BasePost {
 
   isValid() {
     return (
-      this.date.getTime() > 1000 &&
-      notEmptyString(this.slug) &&
+      this.date.getFullYear() > 1980 &&
+      notEmptyString(this.uri, 3) &&
       notEmptyString(this.title)
     );
   }
@@ -120,6 +120,8 @@ export class Post implements BasePost {
       if (isObjectWithObject(resource.adjacent, "next")) {
         if (resource.adjacent.next.id > 0) {
           this.next = new PostPreview(1, resource.adjacent.next);
+        } else if (this.next.isValid()) {
+          this.next = new PostPreview(1, null);
         }
       }
       if (isObjectWithObject(resource.adjacent, "prev")) {
