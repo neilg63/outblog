@@ -1,12 +1,21 @@
-import { urlSplit } from "./settings";
+import {
+  API_URI,
+  defImages,
+  imgBase,
+  siteDesc,
+  siteTitle,
+  urlSplit,
+} from "./settings";
 import {
   cleanText,
+  correctHtml,
   extractExcerpt,
   extractRendered,
   formatDate,
   isObjectWithObject,
   isObjectWithString,
   notEmptyString,
+  stripHtml,
   validISODateString,
 } from "./utils";
 
@@ -60,6 +69,55 @@ export class PostPreview implements BasePost {
   }
 }
 
+export class MetaTagSet {
+  title = "";
+  description = "";
+  image = "";
+
+  constructor(obj: Post | any) {
+    if (obj instanceof Post) {
+      this.title = [siteTitle, obj.title].join(": ");
+      this.description = stripHtml(obj.excerpt);
+      this.image = obj.previewImg;
+    } else if (obj instanceof Object) {
+      Object.entries(obj).forEach(([k, v]) => {
+        if (typeof v === "string") {
+          switch (k) {
+            case "title":
+            case "image":
+              this[k] = v;
+              break;
+            case "description":
+              this[k] = stripHtml(v);
+              break;
+          }
+        }
+      });
+      if (this.title.length < 2) {
+        this.title = siteTitle;
+      }
+      if (this.description.length < 2) {
+        this.description = siteDesc;
+      }
+    }
+  }
+
+  fromPost(obj: Post) {
+    this.title = [siteTitle, obj.title].join(": ");
+    this.description = obj.excerpt;
+    this.image = obj.previewImg;
+  }
+
+  get pageTitle(): string {
+    const title = this.title.split(": ").pop();
+    if (typeof title === "string") {
+      return title;
+    } else {
+      return siteTitle;
+    }
+  }
+}
+
 export interface ImgSize {
   width: number;
   height: number;
@@ -92,7 +150,7 @@ export class Post implements BasePost {
       if (typeof resource.slug === "string") {
         this.slug = resource.slug;
       }
-      this.content = extractRendered(resource, "content");
+      this.content = correctHtml(extractRendered(resource, "content"));
       this.excerpt = extractExcerpt(resource);
       if (resource.date) {
         this.date = new Date(resource.date);
@@ -130,6 +188,10 @@ export class Post implements BasePost {
         }
       }
     }
+  }
+
+  meta(): MetaTagSet {
+    return new MetaTagSet(this);
   }
 
   isValid() {
@@ -206,11 +268,15 @@ export class Tag {
 export class YearLink {
   title = "";
   year = 0;
+  index = 0;
 
-  constructor(year: number) {
+  constructor(year: number, index = 0) {
     if (year > 1900) {
       this.title = year.toString();
       this.year = year;
+    }
+    if (index >= 0) {
+      this.index = index;
     }
   }
 
@@ -218,3 +284,26 @@ export class YearLink {
     return `/${this.year}`;
   }
 }
+
+const randomImage = () => {
+  const num = defImages.length;
+  const index = Math.floor(Math.random() * num * 0.9999999);
+  const imgRef = defImages[index];
+  return [API_URI, imgBase, imgRef].join("/");
+};
+
+export const buildMeta = (pageTitle = "", items: Post[] = []) => {
+  const title = notEmptyString(pageTitle)
+    ? [siteTitle, pageTitle].join(": ")
+    : pageTitle;
+  let description = "Post listing";
+  let image = "";
+  if (items.length > 0) {
+    description = items[0].excerpt;
+    image = items[0].previewImg;
+  } else {
+    description = siteDesc;
+    image = randomImage();
+  }
+  return new MetaTagSet({ title, description, image });
+};

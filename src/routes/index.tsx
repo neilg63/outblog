@@ -5,6 +5,8 @@ import { siteTitle, perPage } from "~/api/settings";
 import PostList from "~/components/PostList";
 import { createEffect } from "solid-js";
 import { renderNextLabel } from "~/api/utils";
+import { buildMeta } from "~/api/models";
+import CustomHead from "~/components/layout/CustomHead";
 
 export function routeData() {
   const [posts] = createResource(async () => {
@@ -20,22 +22,26 @@ export default function Home() {
   const nextLabel = renderNextLabel(2);
   const nextLink = `/list/${nextPage}`
   const [items, setItems] = createSignal(posts());
+  const [metaData, setMetaData] = createSignal(buildMeta());
   createEffect(() => {
     fetchTopPosts(0, perPage).then((data) => {
       if (data instanceof Array) {
         setItems(data);
+        setMetaData(buildMeta());
       }
     })
   })
   return (
-    <main class="text-center mx-auto text-gray-700 p-4">
-      <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
-        {siteTitle}
-      </h1>
-      <ul class="text-center">
-      <PostList items={items} />
-      </ul>
-      <p><A href={nextLink}>{ nextPage }</A></p>
-    </main>
+    <>
+      <CustomHead meta={metaData} />
+      <h2 class="supplementary-title">{siteTitle}</h2>
+      <main class="text-center mx-auto text-gray-700 p-4">
+        <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-4">
+          {siteTitle}
+        </h1>
+        <PostList items={items} />
+        <p><A href={nextLink}>{ nextPage }</A></p>
+      </main>
+    </>
   );
 }

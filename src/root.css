@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Indie+Flower&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,13 +18,112 @@ html.size-l {
 
 body {
   transition: background-color 0.5s ease-in-out;
+  background-color: white;
 }
 
 .text-sky-700 {
   transition: color 0.5s ease-in-out;
 }
 
-@media screen and (min-width: 1024px) {
+main article ul li,
+main article ol li {
+  padding-left: 1em;
+  margin-left: 0.5em;
+}
+
+main article ol {
+  list-style-type: decimal;
+}
+
+main article ul {
+  list-style-type: disc;
+}
+
+main article dl dt {
+  font-weight: bold;
+}
+
+main article dl dd {
+  padding-left: 2em;
+}
+
+main article > figure > figcaption {
+  font-size: 0.9em;
+  font-style: italic;
+  user-select: none;
+  margin-bottom: 1.5em;
+}
+
+.supplementary-title,
+h1.site-title {
+  position: fixed;
+  opacity: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+.main-content > h1,
+.supplementary-title,
+h1.site-title {
+  font-family: 'Indie Flower', cursive;
+}
+
+h1.site-title {
+  color: #00cc33;
+  transition: color 0.5s ease-in-out;
+}
+
+.half-down h1.site-title {
+  color: #008833;
+  transition: color 0.5s ease-in-out;
+}
+
+.full-down h1.site-title {
+  color: #005544;
+  transition: color 0.5s ease-in-out;
+}
+
+.dark-mode h1.site-title {
+  color: #aaffdd;
+  opacity: 0.5;
+}
+
+.dark-mode .half-down h1.site-title {
+  color: #55aa88;
+  transition: color 0.5s ease-in-out;
+}
+
+.dark-mode .full-down h1.site-title {
+  color: #448866;
+  transition: color 0.5s ease-in-out;
+}
+
+.dark-mode footer.bottom-footer {
+  filter: invert(1);
+}
+
+footer.bottom-footer a:hover {
+  filter: hue-rotate(90deg);
+  text-decoration: none;
+}
+
+@media screen and (min-width: 56.25rem) {
+  .supplementary-title {
+    top: 0.875rem;
+    left: 22.5rem;
+    right: 12.5rem;
+    font-size: 1.125em;
+    opacity: 1;
+    z-index: 80;
+    text-align: left;
+  }
+  
+  .scrolled-down .supplementary-title {
+    top: 0.25rem;
+  }
+}
+
+@media screen and (min-width: 64rem) {
   html {
     font-size: 17px;
   }
@@ -34,9 +134,21 @@ body {
   html.size-l {
     font-size: 19px;
   }
+  h1.site-title {
+    top: 5rem;
+    left: 6.25%;
+    transform: rotate(90deg) translateY(-0.0625em) scaleY(0.5);
+    transform-origin: 0 0;
+    margin: 0;
+    padding: 0;
+    font-size: 10vh;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    opacity: 0.3333;
+  }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 80rem) {
   html {
     font-size: 18px;
   }
@@ -46,6 +158,13 @@ body {
 
   html.size-l {
     font-size: 20px;
+  }
+  h1.site-title {
+    transform: rotate(90deg) scaleY(0.5);
+    font-size: 12vh;
+  }
+  .supplementary-title {
+    left: 38.5rem;
   }
 }
 
@@ -76,10 +195,53 @@ body {
   }
 }
 
+
+@media screen and (min-width: 56.25rem) and (max-width: 65rem) {
+
+  .year-link-2,
+  .year-link-3,
+  .year-link-4,
+  .year-link-5 {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 65rem) and (max-width: 70rem) {
+  .year-link-3,
+  .year-link-4,
+  .year-link-5 {
+    display: none;
+  }
+  .supplementary-title {
+    left: 26.5rem; 
+  }
+}
+
+@media screen and (min-width: 70rem) and (max-width: 75rem) {
+  .year-link-4,
+  .year-link-5 {
+    display: none;
+  }
+  .supplementary-title {
+    left: 30rem;
+  }
+}
+
+@media screen and (min-width: 75rem) and (max-width: 80rem) {
+
+  .year-link-5 {
+    display: none;
+  }
+  .supplementary-title {
+    left: 34rem;
+  }
+}
+
 .dark-mode body {
   background-color: black;
 }
 
+.supplementary-title,
 .dark-mode .text-gray-700 {
   color: #cccccc;
 }
@@ -99,20 +261,102 @@ header .display-options {
   top: 1em;
   right: 2.5%;
   transition: top 0.3333s ease-in-out;
+  padding-right: 1.5em;
+}
+
+header .display-options .toggle-display-mode {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  transition: top 0.3333s ease-in-out;
+  width: 2em;
+  z-index: 40;
+  cursor: pointer;
+}
+
+header .display-options .inner-control {
+  opacity: 0;
+  width: 0;
+  overflow: none;
+  pointer-events: none;
+}
+
+header.show-display-options .display-options .inner-control {
+  width: auto;
+  pointer-events: all;
+  overflow: visible;
+  opacity: 1;
+}
+
+header .display-options .display-mode-selector,
+header .display-options .text-size {
+  opacity: 0;
+  width: 0;
+  overflow: none;
+}
+
+header.show-display-options .display-options .display-mode-selector,
+header.show-display-options .display-options .text-size {
+  opacity: 1;
+  width: auto;
+  overflow: visible;
+}
+
+@media screen and (min-width: 80rem) {
+  header .display-options .display-mode-selector,
+  header .display-options .text-size {
+    opacity: 1;
+    width: auto;
+    overflow: visible;
+  }
+  header .display-options .toggle-display-options {
+    display: none; 
+  }
+  header.top-header .display-options {
+    padding-right: 0;
+  }
+}
+
+header .toggle-display-options {
+  position: absolute;
+  display: flex;
+  width: 1em;
+  height: 1em;
+  justify-content: center;
+  align-items: center;
+}
+
+header .display-options .toggle-display-options::after {
+  content: "⚙";
+  font-size: 1.5em;
+}
+
+.toggle-display-options {
+  top: 0.25em;
+  right: 0;
+  bottom: 0;
+  width: 1.75em;
+  z-index: 40;
+  transition: transform 0.33333s ease-in-out;
+}
+
+header .toggle-display-options:hover {
+  transform: rotate(90deg);
 }
 
 .scrolled-down header .display-options {
   top: 0.25em;
 }
 
-header .display-options .display-mode-toggle span {
+header .display-options .display-mode-selector span {
   display: block;
   padding: 0 0.25em;
   max-width: 1.5em;
   max-height: 1.5em;
 }
 
-header .display-options .display-mode-toggle span.light {
+header .display-options .display-mode-selector span.light {
   background-color: #ccffff;
   color: yellow;
 }
@@ -123,24 +367,24 @@ header .display-options .display-mode-toggle span.light {
   color: yellow;
 }
 
-header .display-options .display-mode-toggle span:hover,
+header .display-options .display-mode-selector span:hover,
 header .display-options .text-size:hover {
   font-style: italic;
 }
 
-.dark-mode header .display-options .display-mode-toggle span.light,
-.light-mode header .display-options .display-mode-toggle span.dark {
+.dark-mode header .display-options .display-mode-selector span.light,
+.light-mode header .display-options .display-mode-selector span.dark {
   filter: grayscale(1);
   transition: filter 0.333s ease-in-out, transform 0.333s ease-in-out;
 }
 
-html.dark-mode header .display-options .display-mode-toggle span.light:hover,
-html.light-mode header .display-options .display-mode-toggle span.dark:hover {
+html.dark-mode header .display-options .display-mode-selector span.light:hover,
+html.light-mode header .display-options .display-mode-selector span.dark:hover {
   filter: grayscale(0);
 }
 
 
-header .display-options .display-mode-toggle span.dark {
+header .display-options .display-mode-selector span.dark {
   background-color: black;
   color: white;
 }
@@ -170,11 +414,18 @@ p.date > time {
 
 main p.date {
   text-align: left;
+  position: relative;
+}
+
+main p.date::before {
+  content: "🗓";
+  margin-right: 0.5em;
 }
 
 header.top-header {
   width: 100%;
   box-shadow: rgba(0, 0, 0, 0.15) 3px 3px 4px;
+  z-index: 20;
 }
 
 header.top-header li,
@@ -192,6 +443,7 @@ header.top-header nav .search-toggle {
   width: 1rem;
   height: 1rem;
   cursor: pointer;
+  margin-left: 0.5em;
   transform: scale(1.25) translateY(-20%);
   transition: transform 0.333s ease-in-out;
 }
@@ -248,7 +500,11 @@ header.top-header.show-search input.search-input {
   transform: rotate(90deg);
 }
 
-@media screen and (max-width: 900px) {
+article.inner-content p {
+  padding-bottom: 1em;
+}
+
+@media screen and (max-width:  56.25rem) {
   header.top-header .link-item {
     max-height: 0;
     opacity: 0;
@@ -269,7 +525,7 @@ header.top-header.show-search input.search-input {
   }
 
   header.top-header.menu-expanded ul {
-    max-height: 20em;
+    max-height: 30em;
   }
 
   header.top-header ul>li:first-child {
@@ -283,20 +539,32 @@ header.top-header.show-search input.search-input {
   }
   header.top-header ul>li.link-item a {
     display: block;
-    height: 2em;
+    height: 1.25em;
   }
   header.top-header.menu-expanded ul>li.link-item {
     height: 3em;
   }
-  header.top-header.menu-expanded ul > li.link-item a {  
-    margin-bottom: 2em;
-  }
   header.top-header ul > li a {
     font-size: 1.5em;
   }
+  .supplementary-title {
+    top: 0.25rem;
+    left: 6.75rem;
+    right: 12.5rem;
+    font-size: 1.125em;
+    opacity: 1;
+    z-index: 80;
+    text-align: left;
+  }
+  header.top-header .display-options {
+    top: 0.5rem;
+  }
+  .scrolled-down header.top-header .display-options {
+    top: 0.25rem;
+  }
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width:  56.25rem) {
   .menu-toggle {
     display: none;
   }
@@ -313,6 +581,7 @@ header.top-header.show-search input.search-input {
 
 body > main {
   margin-top: 4rem;
+  z-index: 4;
 }
 
 header.top-header.p-2,
@@ -412,8 +681,6 @@ main .adjacent .next {
 main .adjacent .prev {
   margin-left: 10%;
   text-align: right;
-  align-self: flex-end;
-  justify-self: flex-end;
 }
 
 main .adjacent .direction a {
@@ -493,7 +760,7 @@ body>footer nav ul li a {
 
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 64rem) {
   
   .content-list li figure {
     width: 35%;
@@ -506,7 +773,7 @@ body>footer nav ul li a {
 
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 80rem) {
   main .inner-content {
     padding: 0 6.25%;
   }

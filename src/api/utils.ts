@@ -152,7 +152,7 @@ export const generateYearLinks = (max = 6, startYear = 2000): YearLink[] => {
   const yls: YearLink[] = [];
   const currentYear = new Date().getFullYear();
   for (let i = 0; i < max; i++) {
-    let yl = new YearLink(currentYear - i);
+    let yl = new YearLink(currentYear - i, i);
     if (yl.year >= startYear) {
       if (
         yl instanceof YearLink &&
@@ -188,6 +188,30 @@ export const cleanSearchString = (text: string): string => {
     return encodeURIComponent(
       text.replace(/[^a-z0-9àáéèêîïìùüûìëøöóòñõãß"-]+/gi, " ")
     );
+  } else {
+    return "";
+  }
+};
+
+export const stripHtml = (text = ""): string => {
+  if (notEmptyString(text)) {
+    return text
+      ?.replace(/<\/?\w[^>]*?>/g, " ")
+      .replace(/\s\s+/g, " ")
+      .trim();
+  } else {
+    return "";
+  }
+};
+
+export const correctHtml = (text = ""): string => {
+  if (notEmptyString(text)) {
+    return text
+      ?.replace(
+        /<div[^>]+wp-block-embed__wrapper[^>]*?>\s*(http[^<]+?you[^<]+?)\s*<\/div>/gi,
+        `<iframe src="$1" width="100%" style="min-height: 5rem; width: 100%;aspect-ratio: 4/3"></iframe>`
+      )
+      .trim();
   } else {
     return "";
   }

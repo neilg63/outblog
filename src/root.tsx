@@ -12,7 +12,6 @@ import {
   Routes,
   Scripts,
   Title,
-  useRouteData,
   useNavigate,
 } from "solid-start";
 import "./root.css";
@@ -20,6 +19,7 @@ import { siteTitle, startYear } from "./api/settings";
 import { cleanSearchString, generateYearLinks, notEmptyString } from "./api/utils";
 import { fromLocal, toLocal } from "./lib/localstore";
 import { getScrollTopPos } from "./lib/scroll";
+import { YearLink } from "./api/models";
 
 interface DisplayOpts {
   dark: boolean;
@@ -36,6 +36,7 @@ export default function Root() {
   const wrClasses = ["light", "size-m"];
   const [wrapperClasses, setWrapperClasses] = createSignal(wrClasses.join(" "));
   const [showSearchBar, setShowSearchBar] = createSignal(false);
+  const [showDisplayOpts, setShowDisplayOpts] = createSignal(false);
   const [expandMenu, setExpandMenu] = createSignal(false);
   const toggleSearch = () => {
     setShowSearchBar(!showSearchBar());
@@ -50,6 +51,9 @@ export default function Root() {
     }
     if (expandMenu()) {
       cls.push("menu-expanded");
+    }
+    if (showDisplayOpts()) {
+      cls.push("show-display-options");
     }
     return cls.join(" ");
   }
@@ -66,6 +70,11 @@ export default function Root() {
       setTimeout(setDisplayClasses, 50);
     }
   }
+
+  const toggleDisplayOptions = () => {
+    setShowDisplayOpts(!showDisplayOpts())
+  }
+
   const extractDisplayOptions = (): DisplayOpts => {
     const stored = fromLocal("display", 3600);
     const dark = !stored.expired ? stored.data.dark === true : false;
@@ -98,7 +107,7 @@ export default function Root() {
   }
   createEffect(() => {
     setDisplayClasses();
-    setTimeout(getScrollTopPos, 3090)
+    setTimeout(getScrollTopPos, 300)
   });
   const toggleDisplayMode = () => {
     const { dark } = extractDisplayOptions();
@@ -109,6 +118,9 @@ export default function Root() {
     path == location.pathname
       ? "border-sky-600"
       : "border-transparent hover:border-sky-600";
+  const buildYearLinkClasses = (item: YearLink) => {
+    return ['border-b-2', `year-link-${item.index}`, active(item?.link),'mx-1.5', 'sm:mx-3' ,'list-link', 'link-item'].join(' ')
+  }
   return (
     <Html lang="en" class={ wrapperClasses() }>
       <Head>
@@ -119,18 +131,19 @@ export default function Root() {
       <Body>
         <Suspense>
           <ErrorBoundary>
+            <h1 class="site-title text-gray-700">{ siteTitle }</h1>
             <header class={ buildHeaderClasses()}>
               <nav class="flex main-nav">
                 <div class="menu-toggle" onClick={() => toggleMenu()}></div>
                 <ul class="container flex items-center p-2 text-gray-200">
-                  <li class={`border-b-2 ${active("/")} mx-1.5 sm:mx-6 home link-item`}>
+                  <li class={`border-b-2 ${active("/")} mx-1.5 sm:mx-5 home link-item`}>
                     <A href="/">Home</A>
                   </li>
-                  <li class={`border-b-2 ${active("/about")} mx-1 sm:mx-6 page-link link-item`}>
+                  <li class={`border-b-2 ${active("/about")} mx-1 sm:mx-4 page-link link-item`}>
                     <A href="/about">About</A>
                   </li>
                   <For each={yearLinks()}>
-                    {(item) => <li class={`border-b-2 ${active(item?.link)} mx-1.5 sm:mx-6 list-link link-item`}>
+                    {(item) => <li class={buildYearLinkClasses(item)}>
                       <A href={item?.link}>{ item.title }</A>
                   </li>}
                   </For>
@@ -139,24 +152,25 @@ export default function Root() {
               </nav>
               <input type="search" placeholder="Search" size="40" maxlength="100" class="search-input" onKeyDown={(e) => searchKeyDown(e)}/>
               <nav class="flex display-options">
-                <div class="flex display-mode-toggle" onClick={() => toggleDisplayMode()}>
+                <div class="flex display-mode-selector inner-control" onClick={() => toggleDisplayMode()}>
                   <span class="light option">☀︎</span>
                   <span class="dark option">☽</span>
                 </div>
-                <div class="text-size small" onClick={() => setBaseFontSize("s")} title="Small">A<sup>-</sup></div>
-                <div class="text-size medium" onClick={() => setBaseFontSize("m")} title="Medium">A</div>
-                <div class="text-size large" onClick={() => setBaseFontSize("l")} title="Large">A<sup>+</sup></div>
+                <div class="text-size small inner-control" onClick={() => setBaseFontSize("s")} title="Small">A<sup>-</sup></div>
+                <div class="text-size medium inner-control" onClick={() => setBaseFontSize("m")} title="Medium">A</div>
+                <div class="text-size large inner-control" onClick={() => setBaseFontSize("l")} title="Large">A<sup>+</sup></div>
+                <div class="toggle-display-options" onClick={() => toggleDisplayOptions()}></div>
               </nav>
             </header>
             <Routes>
               <FileRoutes />
             </Routes>
-            <footer>
+            <footer class="bottom-footer">
               <nav>
                 <ul class="inline-flex flex-wrap justify-items-center items-center">
                   <For each={footerYeakLinks()}>
-                  {(item) => <li class={`border-b-2 ${active(item?.link)} mx-1.5 sm:mx-6`}>
-                      <A href={item?.link} class="p-2 flex bg-indigo-500 rounded-lg shadow-lg">{item.title}</A>
+                  {(item) => <li class={`${active(item?.link)} mx-1.5 sm:mx-6`}>
+                      <A href={item?.link} class="p-2 flex bg-sky-800 rounded-lg shadow-lg">{item.title}</A>
                   </li>}
                   </For>
                 </ul>

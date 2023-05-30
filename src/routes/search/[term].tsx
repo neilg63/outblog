@@ -1,4 +1,4 @@
-import { A, useParams, useRouteData } from "solid-start";
+import { A, Title, useParams, useRouteData } from "solid-start";
 import { fetchTopPosts, searchPosts } from "~/api/fetch";
 import { For, createResource, createSignal } from "solid-js";
 import { perPage } from "~/api/settings";
@@ -6,6 +6,7 @@ import PostList from "~/components/PostList";
 import { createEffect } from "solid-js";
 import { notEmptyString } from "~/api/utils";
 import { fromLocal } from "~/lib/localstore";
+import { MetaTagSet } from "~/api/models";
 
 export function routeData() {
   const params = useParams();
@@ -28,22 +29,28 @@ export default function SearchPage() {
     setPageTitle(searchString);
   }
   createEffect(() => {
-    fetchAndSetTitle();
+    const params = useParams();
+    setTimeout(fetchAndSetTitle, 50);
     searchPosts(params.term, 0, perPage).then((data) => {
       if (data instanceof Array) {
         setItems(data);
-        fetchAndSetTitle();
+        setTimeout(fetchAndSetTitle, 250);
       }
     })
-  })
+  });
+  const image = "";
+  const meta = new MetaTagSet({ title: pageTitle(), description: pageTitle(), image })
   return (
-    <main class="text-center mx-auto text-gray-700 p-4">
-      <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
-        {pageTitle()}
-      </h1>
-      <ul class="text-center">
-      <PostList items={items} />
-      </ul>
-    </main>
+    <>
+      <Title>{ meta.title }</Title>
+       <main class="text-center mx-auto text-gray-700 p-4">
+        <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
+          {pageTitle()}
+        </h1>
+        <ul class="text-center">
+        <PostList items={items} />
+        </ul>
+      </main>
+    </>
   );
 }
