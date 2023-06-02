@@ -111,7 +111,7 @@ footer.bottom-footer a:hover {
   .supplementary-title {
     top: 0.875rem;
     left: 22.5rem;
-    right: 12.5rem;
+    right: 4rem;
     font-size: 1.125em;
     opacity: 1;
     z-index: 80;
@@ -165,6 +165,7 @@ footer.bottom-footer a:hover {
   }
   .supplementary-title {
     left: 38.5rem;
+    right: 12.rem;
   }
 }
 
@@ -304,6 +305,9 @@ header.show-display-options .display-options .text-size {
 }
 
 @media screen and (min-width: 80rem) {
+  header .display-options .inner-control {
+    pointer-events: all;
+  }
   header .display-options .display-mode-selector,
   header .display-options .text-size {
     opacity: 1;
@@ -550,7 +554,7 @@ article.inner-content p {
   .supplementary-title {
     top: 0.25rem;
     left: 6.75rem;
-    right: 12.5rem;
+    right: 4.5rem;
     font-size: 1.125em;
     opacity: 1;
     z-index: 80;
