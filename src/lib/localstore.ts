@@ -1,3 +1,7 @@
+import { fetchTags } from "~/api/fetch";
+import { mapToTag } from "~/api/mappers";
+import { Tag } from "~/api/models";
+
 export const localStoreSupported = (): boolean => {
   return typeof localStorage !== "undefined";
 };
@@ -72,4 +76,37 @@ export const clearLocal = (key = "", fuzzy = false) => {
       }
     }
   }
+};
+
+export const getStoredTags = (): Tag[] => {
+  const stored = fromLocal("tag_list", 7 * 24 * 3600);
+  if (!stored.expired && stored.data instanceof Array) {
+    return stored.data.map(mapToTag);
+  } else {
+    return [];
+  }
+};
+
+export const fetchStoredTags = async () => {
+  const storedTags = getStoredTags();
+  if (storedTags.length > 0) {
+    return storedTags;
+  } else {
+    const tags = await fetchTags();
+    if (tags instanceof Array && tags.length > 1) {
+      toLocal("tag_list", tags);
+    }
+    return tags;
+  }
+};
+
+export const extractMatchedTag = (slug = ""): Tag => {
+  const tags = getStoredTags();
+  if (tags.length > 0) {
+    const row = tags.find((tg) => tg.slug === slug);
+    if (row instanceof Object) {
+      return row;
+    }
+  }
+  return new Tag();
 };

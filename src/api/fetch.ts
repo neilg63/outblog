@@ -1,18 +1,8 @@
 import { perPage, wpApiUri } from "./settings";
 import { notEmptyString, renderDateRange } from "./utils";
-import { ParamSet, Post, Tag } from "./models";
-
-const mapToPost = (resource: ParamSet, tags: Tag[] = []): Post => {
-  return new Post(resource, tags);
-};
-
-const mapToPlainPost = (resource: ParamSet): Post => {
-  return new Post(resource, []);
-};
-
-const mapToTag = (resource: ParamSet): Tag => {
-  return new Tag(resource);
-};
+import { Post, Tag } from "./models";
+import { ParamSet } from "./interfaces";
+import { mapToPlainPost, mapToPost, mapToTag } from "./mappers";
 
 const buildQueryString = (params: ParamSet): string => {
   const parts = Object.entries(params)
@@ -47,7 +37,8 @@ export const fetchTopPosts = async (
   perPage = 32,
   year = 0,
   month = 0,
-  tag = 0
+  tag = 0,
+  tagData: Tag[] = []
 ): Promise<Post[]> => {
   const page = start / perPage + 1;
   const monthFilter = renderDateRange(year, month);
@@ -65,14 +56,15 @@ export const fetchTopPosts = async (
     params.tags = tag;
   }
   const data = await fetchContent("posts", params);
-  const tags = await fetchTags();
+  const tags = tagData.length > 1 ? tagData : await fetchTags();
   return data instanceof Array ? data.map((row) => mapToPost(row, tags)) : [];
 };
 
 export const searchPosts = async (
   search = "",
   start = 0,
-  perPage = 32
+  perPage = 32,
+  tagData: Tag[] = []
 ): Promise<Post[]> => {
   const page = start / perPage + 1;
   const params: ParamSet = {
@@ -82,7 +74,7 @@ export const searchPosts = async (
     _fields: "id,date,slug,title,link,excerpt,tags,featured_media,preview_img",
   };
   const data = await fetchContent("posts", params);
-  const tags = await fetchTags();
+  const tags = tagData.length > 1 ? tagData : await fetchTags();
   return data instanceof Array ? data.map((row) => mapToPost(row, tags)) : [];
 };
 
@@ -160,8 +152,11 @@ export const matchTag = async (search = ""): Promise<Tag> => {
   return suggested instanceof Tag ? suggested : new Tag(null);
 };
 
-export const fetchByTag = async (slug = ""): Promise<Post[]> => {
-  const tag = await matchTag(slug);
+export const fetchByTag = async (
+  slug = "",
+  tagItem = new Tag()
+): Promise<Post[]> => {
+  const tag = tagItem.id > 0 ? tagItem : await matchTag(slug);
   const posts = tag.isValid()
     ? await fetchTopPosts(0, perPage, 0, 0, tag.id)
     : [];

@@ -1,3 +1,4 @@
+import { BasePost } from "./interfaces";
 import {
   API_URI,
   defImages,
@@ -12,18 +13,13 @@ import {
   extractExcerpt,
   extractRendered,
   formatDate,
+  isNumeric,
   isObjectWithObject,
   isObjectWithString,
   notEmptyString,
   stripHtml,
   validISODateString,
 } from "./utils";
-
-export interface ParamSet {
-  [key: string]: any;
-}
-
-type BasePost = { title: string; excerpt: string; slug: string; uri: string };
 
 export class PostPreview implements BasePost {
   title = "";
@@ -243,6 +239,7 @@ export class Tag {
   id = 0;
   name = "";
   slug = "";
+  count = 0;
 
   constructor(resource: any = null) {
     if (resource instanceof Object) {
@@ -255,6 +252,9 @@ export class Tag {
       if (notEmptyString(resource.name, 7)) {
         this.name = resource.name;
       }
+      if (isNumeric(resource.count)) {
+        this.count = resource.count - 0;
+      }
     }
   }
 
@@ -262,6 +262,10 @@ export class Tag {
     return (
       this.id > 0 && notEmptyString(this.slug) && notEmptyString(this.name)
     );
+  }
+
+  get link() {
+    return ["/tags", this.slug].join("/");
   }
 }
 

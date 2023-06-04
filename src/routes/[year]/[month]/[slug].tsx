@@ -3,7 +3,6 @@ import { fetchPost} from "~/api/fetch";
 import { Show, createEffect, createSignal } from "solid-js";
 import Article from "~/components/Article";
 import { notEmptyString } from "~/api/utils";
-import { Post } from "~/api/models";
 
 export function routeData() {
   const params = useParams();

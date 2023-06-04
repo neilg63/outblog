@@ -107,6 +107,18 @@ footer.bottom-footer a:hover {
   text-decoration: none;
 }
 
+footer.bottom-footer .bottom-nav {
+  margin: 1em auto;
+  padding: 1em 0;
+  max-width: 60rem;
+  border-top: dashed 1px #999999;
+}
+
+footer.bottom-footer .bottom-nav p {
+  margin-right: 2em;
+  font-size: 0.9em
+}
+
 @media screen and (min-width: 56.25rem) {
   .supplementary-title {
     top: 0.875rem;
@@ -552,8 +564,8 @@ article.inner-content p {
     font-size: 1.5em;
   }
   .supplementary-title {
-    top: 0.25rem;
-    left: 6.75rem;
+    top: 0.375rem;
+    left: 5.25rem;
     right: 2.5rem;
     font-size: 1.125em;
     opacity: 1;
@@ -567,6 +579,30 @@ article.inner-content p {
   }
   .scrolled-down header.top-header .display-options {
     top: 0.25rem;
+  }
+}
+
+@media screen and (max-width: 45rem) {
+  .supplementary-title {
+    font-size: 1em;
+  }
+}
+
+@media screen and (max-width: 32rem) {
+  .supplementary-title {
+    font-size: 0.875em;
+  }
+}
+
+@media screen and (max-width: 28rem) {
+  .supplementary-title {
+    font-size: 0.75em;
+  }
+}
+
+@media screen and (max-width: 24rem) {
+  .supplementary-title {
+    font-size: 0.625em;
   }
 }
 
@@ -602,6 +638,16 @@ header.top-header nav ul.p-2 {
 
 .inner-content.date {
   margin: 0.75em auto 1.5em;
+}
+
+article.inner-content > figure > div > iframe {
+  width: 100%;
+  aspect-ratio: 4/3;
+  height: auto;
+}
+
+article.inner-content > figure.wp-embed-aspect-16-9 > div > iframe {
+  aspect-ratio: 16/9;
 }
 
 main .content-list li {
@@ -699,8 +745,51 @@ main .adjacent .next a {
 }
 
 main .adjacent .prev a {
-  padding-right: 2rem;
- 
+  padding-right: 2rem; 
+}
+
+main .tag-maze {
+  margin-bottom: 2em;
+}
+
+main .tag-maze li a {
+  color: white;
+  transition: all 0.5s ease-in-out;
+}
+
+main .tag-maze ul {
+  justify-content: center;
+  align-items: center;
+}
+
+main .tag-maze ul li {
+  margin-bottom: 1em;
+}
+
+@media (min-width: 70rem) {
+  main .tag-maze li a {
+    margin: 0.25em;
+  }
+  main .tag-maze ul li {
+    transform: scale(1.2);
+  }
+}
+
+main .tag-maze ul li:nth-child(4n + 2) {
+  filter: hue-rotate(90deg);
+}
+
+main .tag-maze ul li:nth-child(4n + 3) {
+  filter: hue-rotate(180deg);
+}
+
+main .tag-maze ul li:nth-child(4n + 4) {
+  filter: hue-rotate(270deg);
+}
+
+main .tag-maze ul li a:hover {
+  transform: scale(1.5);
+  filter: hue-rotate(45deg);
 }
 
 main .adjacent .next a::before,
@@ -736,6 +825,30 @@ body>footer nav ul li {
 
 body>footer nav ul li a {
   color: white;
+}
+
+ul li a em,
+ul li a span,
+ul li a sup,
+ul li a strong {
+  display: inline-block;
+}
+
+ul li a sup.count {
+  top: 0.25em;
+  margin: 0 0.125em 0 0.75em;
+}
+
+ul li a strong {
+  transform: scale(1.5) translateY(-10%);
+}
+
+ul li a strong:last-child {
+  margin: 0 0.25em 0 0.75em;
+}
+
+ul li a strong:first-child {
+  margin: 0 0.75em 0 0.25em;
 }
 
 .content-list li {

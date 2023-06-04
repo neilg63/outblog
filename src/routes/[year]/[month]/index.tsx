@@ -5,6 +5,7 @@ import { buildMeta } from "~/api/models";
 import { isNumeric, renderYearMonth } from "~/api/utils";
 import PostList from "~/components/PostList";
 import CustomHead from "~/components/layout/CustomHead";
+import { getStoredTags } from "~/lib/localstore";
 
 export function routeData() {
   const params = useParams();
@@ -31,7 +32,8 @@ export default function MonthList() {
     const year = isNumeric(params.year) ? parseInt(params.year) : 0;
     const month = isNumeric(params.month) ? parseInt(params.month) : 0;
     setYearLabel(renderYearMonth(year, month));
-    fetchTopPosts(0, 100, year, month).then((data) => {
+    const tagData = getStoredTags();
+    fetchTopPosts(0, 100, year, month, 0, tagData).then((data) => {
       if (data instanceof Array) {
         setItems(data);
         setMetaData(buildMeta(yearLabel(), items()));
@@ -43,7 +45,7 @@ export default function MonthList() {
       <CustomHead meta={ metaData } />
       <h2 class="supplementary-title">{metaData().pageTitle}</h2>
       <main class="text-center mx-auto text-gray-700 p-4">
-        <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
+        <h1 class="max-6-xs text-6xl text-sky-700 font-thin my-4">
           {yearLabel()}
         </h1>
         <PostList items={items} />

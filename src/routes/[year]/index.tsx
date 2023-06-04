@@ -6,12 +6,14 @@ import { perPage } from "~/api/settings";
 import { isNumeric } from "~/api/utils";
 import PostList from "~/components/PostList";
 import CustomHead from "~/components/layout/CustomHead";
+import { getStoredTags } from "~/lib/localstore";
 
 export function routeData() {
   const params = useParams();
   const year = isNumeric(params.year) ? parseInt(params.year) : 0;
   const [posts] = createResource(async () => {
-    const results = await fetchTopPosts(0, perPage, year, 0);
+    const tagData = getStoredTags();
+    const results = await fetchTopPosts(0, perPage, year, 0, 0, tagData);
     return results;
   });
   return { posts };
@@ -38,7 +40,7 @@ export default function YearList() {
       <CustomHead meta={metaData} />
       <h2 class="supplementary-title">{metaData().pageTitle}</h2>
       <main class="text-center mx-auto text-gray-700 p-4">
-      <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
+      <h1 class="max-6-xs text-6xl text-sky-700 font-thin my-4">
         {yearLabel()}
       </h1>
         <PostList items={items} />

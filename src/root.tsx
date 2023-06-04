@@ -1,5 +1,5 @@
 // @refresh reload
-import { For, Suspense, createEffect, createMemo, createResource, createSignal } from "solid-js";
+import { For, Show, Suspense, createEffect, createMemo, createSignal } from "solid-js";
 import {
   useLocation,
   A,
@@ -17,9 +17,10 @@ import {
 import "./root.css";
 import { siteTitle, startYear } from "./api/settings";
 import { cleanSearchString, generateYearLinks, notEmptyString } from "./api/utils";
-import { fromLocal, toLocal } from "./lib/localstore";
+import { fetchStoredTags, fromLocal, getStoredTags, toLocal } from "./lib/localstore";
 import { getScrollTopPos } from "./lib/scroll";
-import { YearLink } from "./api/models";
+import { Tag, YearLink } from "./api/models";
+import TagLinkSet from "./components/TagLinkSet";
 
 interface DisplayOpts {
   dark: boolean;
@@ -38,6 +39,10 @@ export default function Root() {
   const [showSearchBar, setShowSearchBar] = createSignal(false);
   const [showDisplayOpts, setShowDisplayOpts] = createSignal(false);
   const [expandMenu, setExpandMenu] = createSignal(false);
+  const [showTags, setShowTags] = createSignal(false);
+  const emptyTags: Tag[] = [];
+  const [tagList, setTagList] = createSignal(emptyTags);
+  const [mayShowTags, setMayShowTags] = createSignal(location.pathname !== "/tags");
   const toggleSearch = () => {
     setShowSearchBar(!showSearchBar());
   }
@@ -105,9 +110,28 @@ export default function Root() {
         break;
     }
   }
+
+  const toggleShowTags = () => {
+    setShowTags(!showTags());
+  }
+
   createEffect(() => {
+    const location = useLocation();
     setDisplayClasses();
-    setTimeout(getScrollTopPos, 300)
+    setTimeout(getScrollTopPos, 300);
+    const tags = getStoredTags();
+    if (tags.length > 0) {
+      setTagList(tags);
+    } else {
+      setTimeout(() => {
+        fetchStoredTags().then(tags => {
+          if (tags instanceof Array && tags.length > 0) {
+            setTagList(tags);
+          }
+        });
+      }, 5000);
+    }
+    setMayShowTags(location.pathname !== '/tags');
   });
   const toggleDisplayMode = () => {
     const { dark } = extractDisplayOptions();
@@ -173,7 +197,16 @@ export default function Root() {
                       <A href={item?.link} class="p-2 flex bg-sky-800 rounded-lg shadow-lg">{item.title}</A>
                   </li>}
                   </For>
+                  <Show when={mayShowTags() && !showTags()}>
+                    <li class="show-tags"><A href='#show-tags' onClick={() => toggleShowTags()} class="p-2 flex bg-sky-800 rounded-lg shadow-lg"><em>Show all tags</em> <strong>⬊</strong></A></li>
+                  </Show>
                 </ul>
+                <Show when={mayShowTags() && showTags()}>
+                  <TagLinkSet tagList={tagList} toggle={ toggleShowTags} />
+                </Show>
+              </nav>
+              <nav class="flex flex-row bottom-nav">
+                <p>© Neil Gardner 2023 </p><p><A href="/tags">Tag Maze</A></p>
               </nav>
             </footer>
           </ErrorBoundary>
