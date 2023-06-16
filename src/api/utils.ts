@@ -206,8 +206,13 @@ export const stripHtml = (text = ""): string => {
 
 export const correctHtml = (text = ""): string => {
   if (notEmptyString(text)) {
+    const srcRgx = new RegExp(
+      "https://www.outsider-insight.org.uk/wp-content/",
+      "gi"
+    );
     return text
-      ?.replace(
+      ?.replace(srcRgx, `https://cms.outsider-insight.org.uk/wp-content`)
+      .replace(
         /<div[^>]+wp-block-embed__wrapper[^>]*?>\s*(http[^<]+?you[^<]+?)\s*<\/div>/gi,
         `<iframe src="$1" width="100%" style="min-height: 5rem; width: 100%;aspect-ratio: 4/3"></iframe>`
       )
