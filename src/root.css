@@ -39,6 +39,10 @@ main article ul {
   list-style-type: disc;
 }
 
+main h1:first-child {
+  margin-bottom: 1em;
+}
+
 main article dl dt {
   font-weight: bold;
 }
@@ -601,6 +605,7 @@ article.inner-content p {
 @media screen and (max-width: 45rem) {
   .supplementary-title {
     font-size: 1em;
+    left: 6.25rem;
   }
 }
 
