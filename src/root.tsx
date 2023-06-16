@@ -62,6 +62,17 @@ export default function Root() {
     }
     return cls.join(" ");
   }
+
+  const buildBodyClasses = ():string => {
+    const cls = [];
+    if (showSearchBar()) {
+      cls.push("show-search-bar")
+    }
+    if (expandMenu()) {
+      cls.push("menu-mode");
+    }
+    return cls.join(" ");
+  }
   const setDisplayMode = (dark = false) => {
     const opts = extractDisplayOptions();
     opts.dark = dark;
@@ -161,7 +172,7 @@ export default function Root() {
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Body>
+      <Body class={buildBodyClasses()}>
         <Suspense>
           <ErrorBoundary>
             <h1 class="site-title text-gray-700">{ siteTitle }</h1>

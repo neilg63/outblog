@@ -72,6 +72,10 @@ h1.site-title {
   font-family: 'Indie Flower', cursive;
 }
 
+.supplementary-title {
+  transition: opacity 0.3333s ease-in-out;
+}
+
 h1.site-title {
   color: #00cc33;
   transition: color 0.5s ease-in-out;
@@ -506,6 +510,10 @@ header.top-header.show-search input.search-input {
   padding: 0.25em 0.375em;
 }
 
+.show-search-bar .supplementary-title {
+  opacity: 0;
+}
+
 .top-header a,
 .menu-toggle {
   user-select: none;
@@ -605,7 +613,9 @@ article.inner-content p {
 @media screen and (max-width: 45rem) {
   .supplementary-title {
     font-size: 1em;
-    left: 6.25rem;
+  }
+  header nav.main-nav ul {
+    padding-left: 0;
   }
 }
 
