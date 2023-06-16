@@ -1,4 +1,4 @@
-export const API_URI = "https://www.outsider-insight.org.uk";
+export const API_URI = "https://cms.outsider-insight.org.uk";
 export const WP_API_BASE = "wp-json/wp/v2";
 
 export const siteTitle = `Outsider Insight`;

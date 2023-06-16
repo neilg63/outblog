@@ -111,25 +111,34 @@ export default function Root() {
     }
   }
 
-  const toggleShowTags = () => {
-    setShowTags(!showTags());
+  const toggleShowTags = (e: Event) => {
+    const newState = !showTags();
+    if (e instanceof Event) {
+      e.preventDefault()
+      if (window instanceof Window) {
+        window.location.hash = newState ? 'show-tags' : 'hide-tags';
+      }
+    }
+    setShowTags(newState);
   }
 
   createEffect(() => {
     const location = useLocation();
     setDisplayClasses();
     setTimeout(getScrollTopPos, 300);
-    const tags = getStoredTags();
-    if (tags.length > 0) {
-      setTagList(tags);
-    } else {
-      setTimeout(() => {
-        fetchStoredTags().then(tags => {
-          if (tags instanceof Array && tags.length > 0) {
-            setTagList(tags);
-          }
-        });
-      }, 5000);
+    if (tagList().length < 1) {
+      const tags = getStoredTags();
+      if (tags.length > 0) {
+        setTagList(tags);
+      } else {
+        setTimeout(() => {
+          fetchStoredTags().then(tags => {
+            if (tags instanceof Array && tags.length > 0) {
+              setTagList(tags);
+            }
+          });
+        }, 5000);
+      }
     }
     setMayShowTags(location.pathname !== '/tags');
   });
@@ -198,7 +207,7 @@ export default function Root() {
                   </li>}
                   </For>
                   <Show when={mayShowTags() && !showTags()}>
-                    <li class="show-tags"><A href='#show-tags' onClick={() => toggleShowTags()} class="p-2 flex bg-sky-800 rounded-lg shadow-lg"><em>Show all tags</em> <strong>⬊</strong></A></li>
+                    <li class="show-tags"><A href='#show-tags' onClick={(e) => toggleShowTags(e)} class="p-2 flex bg-sky-800 rounded-lg shadow-lg"><em>Show all tags</em> <strong>⬊</strong></A></li>
                   </Show>
                 </ul>
                 <Show when={mayShowTags() && showTags()}>

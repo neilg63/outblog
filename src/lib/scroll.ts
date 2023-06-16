@@ -1,5 +1,4 @@
 export const getScrollTopPos = () => {
-  console.log(window.scrollY);
   if (window) {
     window.addEventListener("scroll", function () {
       const wh = window.innerHeight;

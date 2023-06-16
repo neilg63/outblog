@@ -15,14 +15,39 @@ const buildQueryString = (params: ParamSet): string => {
   return parts.length > 0 ? "?" + parts.join("&") : "";
 };
 
+export const fetchContentRemote = async (
+  method: string,
+  params: ParamSet,
+  remote = true
+): Promise<any> => {
+  const qStr = buildQueryString(params);
+  const uriString = method + qStr;
+  const uri = remote ? uriString : wpApiUri(uriString);
+  const response = await fetch(uri);
+  return await response.json();
+};
+
 export const fetchContent = async (
   method: string,
   params: ParamSet
 ): Promise<any> => {
-  const qStr = buildQueryString(params);
-  const uri = wpApiUri(method + qStr);
-  const response = await fetch(uri);
-  return await response.json();
+  return await fetchContentRemote(method, params, false);
+};
+
+export const fetchChartData = async (params: ParamSet): Promise<any> => {
+  const uri = `https://astroapi.findingyou.co/chart-data`;
+  const keys = Object.entries(params);
+  if (keys.length < 2) {
+    params = {
+      dt: "1978-06-28T11:30:30",
+      loc: "45.15,-13.667",
+      ct: 1,
+      eq: 0,
+      topo: 2,
+      sid: 1,
+    };
+  }
+  return await fetchContentRemote(uri, params);
 };
 
 export const fetchContentPlain = async (
