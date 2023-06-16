@@ -211,7 +211,7 @@ export const correctHtml = (text = ""): string => {
       "gi"
     );
     return text
-      ?.replace(srcRgx, `https://cms.outsider-insight.org.uk/wp-content`)
+      ?.replace(srcRgx, `https://cms.outsider-insight.org.uk/wp-content/`)
       .replace(
         /<div[^>]+wp-block-embed__wrapper[^>]*?>\s*(http[^<]+?you[^<]+?)\s*<\/div>/gi,
         `<iframe src="$1" width="100%" style="min-height: 5rem; width: 100%;aspect-ratio: 4/3"></iframe>`
