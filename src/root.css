@@ -98,6 +98,22 @@ h1.site-title {
   transition: color 0.5s ease-in-out;
 }
 
+.scrolled-down .display-mode-selector {
+  transform: scale(0.8);
+}
+
+.scrolled-down .menu-toggle {
+  transform: scale(0.8) translateY(-33.333%);
+}
+
+.scrolled-down .toggle-display-options {
+  font-size: 0.8em ;
+}
+
+.display-mode-selector {
+  transition: transform 0.333s ease-in-out;
+}
+
 .dark-mode footer.bottom-footer {
   filter: invert(1);
 }
@@ -354,7 +370,7 @@ header .display-options .toggle-display-options::after {
   bottom: 0;
   width: 1.75em;
   z-index: 40;
-  transition: transform 0.33333s ease-in-out;
+  transition: transform 0.33333s ease-in-out, font-size 0.33333s ease-in-out;
 }
 
 header .toggle-display-options:hover {

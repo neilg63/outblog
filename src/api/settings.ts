@@ -1,4 +1,5 @@
 export const API_URI = "https://cms.outsider-insight.org.uk";
+
 export const WP_API_BASE = "wp-json/wp/v2";
 
 export const siteTitle = `Outsider Insight`;
@@ -6,6 +7,9 @@ export const siteTitle = `Outsider Insight`;
 export const siteDesc = `If you feel unable to cope with the pace of socio-cultural change or reconcile obvious contradictions and feel social and personal injustices have grown rather than shrunk over the last 30 years of neoliberal economic globalisation with an unprecedented rate of cultural change and social engineering, then you maybe you are not mad, society is.`;
 
 export const imgBase = "wp-content/uploads";
+
+export const ICON_BASE =
+  "https://cms.outsider-insight.org.uk/wp-content/uploads/fbrfg";
 
 export const defImages = [
   "2023/05/power-dynamics-green.jpg",
