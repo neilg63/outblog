@@ -68,6 +68,9 @@ export default function Root() {
     if (showSearchBar()) {
       cls.push("show-search-bar")
     }
+    if (showDisplayOpts()) {
+      cls.push("show-display-opts-bar");
+    }
     if (expandMenu()) {
       cls.push("menu-mode");
     }
@@ -91,14 +94,14 @@ export default function Root() {
     setShowDisplayOpts(!showDisplayOpts())
   }
 
-  const extractDisplayOptions = (): DisplayOpts => {
+  const extractDisplayOptions = (darkDefault = false): DisplayOpts => {
     const stored = fromLocal("display", 3600);
-    const dark = !stored.expired ? stored.data.dark === true : false;
+    const dark = !stored.expired ? stored.data.dark === true : darkDefault;
     const size = !stored.expired && notEmptyString(stored.data.size) ? stored.data.size : "m";
     return { size, dark };
   }
-  const setDisplayClasses = () => {
-    const { dark, size } = extractDisplayOptions();
+  const setDisplayClasses = (darkDefault = false) => {
+    const { dark, size } = extractDisplayOptions(darkDefault);
     const cls = [dark ? "dark-mode" : "light-mode"];
     cls.push(["size", size].join("-"));
     setWrapperClasses(cls.join(" "));
@@ -135,7 +138,14 @@ export default function Root() {
 
   createEffect(() => {
     const location = useLocation();
-    setDisplayClasses();
+    let applyDarkDefault = false;
+    if (window instanceof Window) {
+      const mediaPref = window.matchMedia("(prefers-color-scheme:dark)");
+      if (mediaPref.matches) {
+        applyDarkDefault = true;
+      }
+    }
+    setDisplayClasses(applyDarkDefault);
     setTimeout(getScrollTopPos, 300);
     if (tagList().length < 1) {
       const tags = getStoredTags();
