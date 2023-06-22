@@ -162,18 +162,26 @@ export default function Root() {
       }
     }
     setMayShowTags(location.pathname !== '/tags');
+    setExpandMenu(false);
   });
   const toggleDisplayMode = () => {
     const { dark } = extractDisplayOptions();
     setDisplayMode(!dark);
     setTimeout(setDisplayClasses, 50);
   }
+  const isActivePath = (path: string): boolean => {
+    return path == location.pathname || (location.pathname.length > 2 && location.pathname.startsWith(path))
+  }
   const active = (path: string) =>
-    path == location.pathname
+    isActivePath(path)
       ? "border-sky-600"
       : "border-transparent hover:border-sky-600";
   const buildYearLinkClasses = (item: YearLink) => {
     return ['border-b-2', `year-link-${item.index}`, active(item?.link),'mx-1.5', 'sm:mx-3' ,'list-link', 'link-item'].join(' ')
+  }
+  const buildFooterYearLinkClasses = (item: YearLink) => {
+    const contextClass = isActivePath(item?.link) ? `bg-lime-800` : `bg-sky-800`;
+    return `p-2 flex ${contextClass} rounded-lg shadow-lg`
   }
   return (
     <Html lang="en" class={ wrapperClasses() }>
@@ -224,7 +232,7 @@ export default function Root() {
                 <ul class="inline-flex flex-wrap justify-items-center items-center">
                   <For each={footerYeakLinks()}>
                   {(item) => <li class={`${active(item?.link)} mx-1.5 sm:mx-6`}>
-                      <A href={item?.link} class="p-2 flex bg-sky-800 rounded-lg shadow-lg">{item.title}</A>
+                      <A href={item?.link} class={ buildFooterYearLinkClasses(item) }>{item.title}</A>
                   </li>}
                   </For>
                   <Show when={mayShowTags() && !showTags()}>

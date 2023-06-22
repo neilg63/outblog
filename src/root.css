@@ -25,6 +25,28 @@ body {
   transition: color 0.5s ease-in-out;
 }
 
+main {
+  min-height: calc(100vh - 6rem);
+}
+
+@media (min-height: 30rem) {
+  main {
+    min-height: calc(100vh - 7.5rem);
+  }
+}
+
+@media (min-height: 40rem) {
+  main {
+    min-height: calc(100vh - 9rem);
+  }
+}
+
+@media (min-height: 50rem) {
+  main {
+    min-height: calc(100vh - 10.5rem);
+  }
+}
+
 main article ul li,
 main article ol li {
   padding-left: 1em;
@@ -95,19 +117,21 @@ h1.site-title {
   transition: color 0.5s ease-in-out;
 }
 
-.dark-mode h1.site-title {
-  color: #aaffdd;
-  opacity: 0.5;
-}
+@media (min-width: 64rem) {
+  .dark-mode h1.site-title {
+    color: #aaffdd;
+    opacity: 0.5;
+  }
 
-.dark-mode .half-down h1.site-title {
-  color: #55aa88;
-  transition: color 0.5s ease-in-out;
-}
+  .dark-mode .half-down h1.site-title {
+    color: #55aa88;
+    transition: color 0.5s ease-in-out;
+  }
 
-.dark-mode .full-down h1.site-title {
-  color: #448866;
-  transition: color 0.5s ease-in-out;
+  .dark-mode .full-down h1.site-title {
+    color: #448866;
+    transition: color 0.5s ease-in-out;
+  }
 }
 
 .scrolled-down .display-mode-selector {
@@ -540,6 +564,7 @@ header.top-header.show-search input.search-input {
   border-top: solid 2px white;
   border-bottom: solid 2px white;
   transition: transform 0.333s ease-in-out, border-color 0.333s ease-in-out;
+  cursor: pointer;
 }
 
 .menu-toggle:hover {
@@ -665,6 +690,10 @@ article.inner-content p {
   left: 0;
   right: 0;
   border-bottom: solid 2px white;
+}
+
+.menu-toggle:hover::before {
+  border-color: yellow;
 }
 
 body > main {
