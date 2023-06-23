@@ -170,7 +170,7 @@ export default function Root() {
     setTimeout(setDisplayClasses, 50);
   }
   const isActivePath = (path: string): boolean => {
-    return path == location.pathname || (location.pathname.length > 2 && location.pathname.startsWith(path))
+    return path == location.pathname || (location.pathname.length > 2 && path.length > 2 && location.pathname.startsWith(path))
   }
   const active = (path: string) =>
     isActivePath(path)
