@@ -945,6 +945,36 @@ ul li a strong:first-child {
   width: 100%;
 }
 
+.list-page-nav {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin: 2em auto;
+}
+
+.list-page-nav a {
+  display: inline-block;
+  margin: 0.5em 2em;
+}
+
+
+
+.list-page-nav a.next::after,
+.list-page-nav a.prev::before {
+  display: inline-block;
+  transform: scale(1.5);
+}
+
+.list-page-nav a.prev::before {
+  content: "⇦";
+  margin-right: 0.75em;
+}
+
+.list-page-nav a.next::after {
+  content: "⇨";
+  margin-left: 0.75em;
+}
+
 @media screen and (min-width: 800px) {
   main .inner-content {
     padding: 0 5%;

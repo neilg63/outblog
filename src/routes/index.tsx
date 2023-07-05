@@ -40,7 +40,7 @@ export default function Home() {
           {siteTitle}
         </h1>
         <PostList items={items} />
-        <p><A href={nextLink}>{ nextPage }</A></p>
+        <p class="list-page-nav"><A href={nextLink} class="next">{ nextLabel }</A></p>
       </main>
     </>
   );
