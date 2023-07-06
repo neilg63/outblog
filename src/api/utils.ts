@@ -179,8 +179,8 @@ export const cleanText = (text: string): string => {
   }
 };
 
-export const renderNextLabel = (page = 2) => `(page ${page})`;
-export const renderPrevLabel = (page = 2) => `(page ${page})`;
+export const renderNextLabel = (page = 2) => `older (page ${page})`;
+export const renderPrevLabel = (page = 2) => `newer (page ${page})`;
 
 export const renderPageLink = (page = 2) => `/list/${page}`;
 

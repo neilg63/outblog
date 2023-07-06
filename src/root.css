@@ -954,10 +954,21 @@ ul li a strong:first-child {
 
 .list-page-nav a {
   display: inline-block;
-  margin: 0.5em 2em;
+  margin: 0.5em 1em;
+  white-space: nowrap;
 }
 
+@media (min-width: 30em) {
+  .list-page-nav a {
+    margin: 0.5em 1.5em;
+  }
+}
 
+@media (min-width: 40em) {
+  .list-page-nav a {
+    margin: 0.5em 2em;
+  }
+}
 
 .list-page-nav a.next::after,
 .list-page-nav a.prev::before {
