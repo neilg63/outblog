@@ -29,10 +29,11 @@ button.icon-button {
 header form.search-widget {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: flex-start;
+  align-items: center;
   justify-self: flex-start;
   align-self: flex-start;
   height: 2rem;
+  max-width: 100%;
 }
 
 header button.search-control {
@@ -590,7 +591,7 @@ header.top-header.show-search button.search-control {
 
 @media (min-width: 60rem) {
   header button.search-control {
-    transform: scale(2) translate(25%);
+    transform: scale(2) translate(50%);
   }
 }
 
@@ -664,9 +665,15 @@ article.inner-content p {
 
   header.top-header ul > li.search-toggle {
     position: absolute;
-    left: 2.25rem;
+    left: 2rem;
     top: 0.625rem;
     transition: all 0.333s ease-in-out;
+  }
+
+  @media (min-width: 25rem) {
+    header.top-header ul>li.search-toggle {
+      left: 2.25rem;
+    }
   }
 
   .scrolled-down  header.top-header ul>li.search-toggle {
