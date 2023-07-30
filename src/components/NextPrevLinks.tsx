@@ -8,7 +8,7 @@ export default function NextPrevLink({ item, mode }: { item: Accessor<PostPrevie
     cls.push('has-link');
   }
   const className = cls.join(" ");
-  return <Show when={item()?.isValid()}>
+return <Show when={item()?.isValid()}>
     <div class={className}>
       <A href={item()!.uri}>{ item()?.title }</A>
     </div>

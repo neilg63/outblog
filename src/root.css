@@ -21,6 +21,31 @@ body {
   background-color: white;
 }
 
+button.icon-button {
+  background: none;
+  border: none;
+}
+
+header form.search-widget {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  justify-self: flex-start;
+  align-self: flex-start;
+  height: 2rem;
+}
+
+header button.search-control {
+  transform: scale(1.625, 2.5) translateX(-50%);
+  opacity: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+header button.search-control:hover {
+  color: yellow;
+}
+
 .text-sky-700 {
   transition: color 0.5s ease-in-out;
 }
@@ -115,6 +140,10 @@ h1.site-title {
 .full-down h1.site-title {
   color: #005544;
   transition: color 0.5s ease-in-out;
+}
+
+.dark-mode .search-input {
+  color: black;
 }
 
 @media (min-width: 64rem) {
@@ -533,11 +562,36 @@ header.top-header input.search-input {
 
 header.top-header.show-search input.search-input {
   position: relative;
-  max-width: calc(100% - 5rem);
-  left: -0.75rem;
+  max-width: calc(100% - 5.75rem);
+  left: -1.5rem;
   opacity: 1;
   border-radius: 0.25em;
   padding: 0.25em 0.375em;
+  align-self: flex-start;
+}
+
+header.top-header.show-search button.search-control {
+  opacity: 1;
+  pointer-events: all;
+  align-self: flex-start;
+}
+
+@media (max-width: 40rem) {
+  header.top-header.show-search .display-options {
+    display: none;
+  }
+}
+
+@media (min-width: 40rem) {
+  header button.search-control {
+      transform: scale(2);
+  }
+}
+
+@media (min-width: 60rem) {
+  header button.search-control {
+    transform: scale(2) translate(25%);
+  }
 }
 
 .show-display-opts-bar .supplementary-title,
@@ -610,7 +664,7 @@ article.inner-content p {
 
   header.top-header ul > li.search-toggle {
     position: absolute;
-    left: 2.5rem;
+    left: 2.25rem;
     top: 0.625rem;
     transition: all 0.333s ease-in-out;
   }

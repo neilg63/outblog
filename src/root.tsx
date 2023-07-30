@@ -106,23 +106,34 @@ export default function Root() {
     cls.push(["size", size].join("-"));
     setWrapperClasses(cls.join(" "));
   }
+
+  const submitTextSearch = (target: any) => {
+    if (target instanceof HTMLInputElement) {
+      if (notEmptyString(target.value)) {
+        const searchStr = target.value.trim();
+        if (searchStr.length > 1) {
+          const uri = ["/search", cleanSearchString(searchStr)].join("/")
+          toLocal("search-phrase", searchStr);
+          navigate(uri, { replace: true });
+          target.value = "";
+          setShowSearchBar(false);
+        }
+      }
+    }
+  }
+
   const searchKeyDown = (e: KeyboardEvent) => {
     switch (e.code.toLowerCase()) {
       case "enter":
-        if (e.target instanceof HTMLInputElement) {
-          if (notEmptyString(e.target.value)) {
-            const searchStr = e.target.value.trim();
-            if (searchStr.length > 1) {
-              const uri = ["/search", cleanSearchString(searchStr)].join("/")
-              toLocal("search-phrase", searchStr);
-              navigate(uri, { replace: true });
-              e.target.value = "";
-              setShowSearchBar(false);
-            }
-          }
-        }
+        submitTextSearch(e.target);
         break;
     }
+  }
+
+  const searchClick = (e: Event) => {
+    e.preventDefault();
+    const target = document.querySelector('.search-input');
+    submitTextSearch(target);
   }
 
   const toggleShowTags = (e: Event) => {
@@ -212,7 +223,10 @@ export default function Root() {
                   <li class="search-toggle" onClick={() => toggleSearch()}></li>
                 </ul>
               </nav>
-              <input type="search" placeholder="Search" size="40" maxlength="100" class="search-input" onKeyDown={(e) => searchKeyDown(e)}/>
+              <form class="search-widget">
+                <input type="search" placeholder="Search" size="40" maxlength="100" class="search-input" onKeyDown={(e) => searchKeyDown(e)} />
+                <button onClick={(e) => searchClick(e)} class="icon-button search-control">➠</button>
+              </form>
               <nav class="flex display-options">
                 <div class="flex display-mode-selector inner-control" onClick={() => toggleDisplayMode()}>
                   <span class="light option">☀︎</span>
