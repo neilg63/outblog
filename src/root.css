@@ -143,6 +143,7 @@ h1.site-title {
   transition: color 0.5s ease-in-out;
 }
 
+body .search-input,
 .dark-mode .search-input {
   color: black;
 }
