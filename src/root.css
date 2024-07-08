@@ -1057,6 +1057,16 @@ main article.inner-content figure.size-large {
   margin-bottom: 1em;
 }
 
+main article.inner-content .wp-block-table,
+main article.inner-content .wp-block-table table {
+  width: 100%;
+}
+
+main article.inner-content .wp-block-table table td,
+main article.inner-content .wp-block-table table th {
+  padding: 0.125em 0.5em;
+}
+
 @media screen and (min-width: 800px) {
   main .inner-content {
     padding: 0 5%;
